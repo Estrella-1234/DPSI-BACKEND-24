@@ -3,16 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var categoriesRouter = require('./routes/categories'); // Impor rute categories
 var app = express();
-var sequelize = require('./models/index'); // Impor sequelize
-var Category = require('./models/category'); // Impor model Category
-var Product = require('./models/product'); // Impor model Product
+var sequelize = require('./models/index'); 
 var authRouter = require('./routes/auth');
+var usersRouter = require('./routes/users');
+var customerRouter = require('./routes/customer');
 
 
 // view engine setup
@@ -29,10 +25,14 @@ app.use('/uploads', express.static('uploads')); // Middleware untuk menyajikan f
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/products', productsRouter);
-app.use('/categories', categoriesRouter); // Gunakan rute categories
 app.use('/auth', authRouter);
+app.use('/customer', customerRouter);
 
+sequelize.sequelize.sync().then(() => {
+  console.log('Connection has been established successfully.');
+}).catch((error) => {
+  console.error('Unable to connect to the database:', error);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -50,13 +50,5 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-// Sinkronkan model dengan database
-sequelize.sync()
-  .then(() => {
-    console.log('Database synchronized');
-  })
-  .catch(err => {
-    console.error('Error synchronizing database:', err);
-  });
 
 module.exports = app;
