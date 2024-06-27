@@ -1,22 +1,22 @@
 const { Sequelize } = require('sequelize');
 
 // Konfigurasi koneksi Sequelize
+// const sequelize = new Sequelize(process.env.DB_URI);
+
 const sequelize = new Sequelize('dpsi24', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql'
+  host: 'localhost',
+  dialect: 'mysql'
 });
 
 
 const Customer = require('./customer')(sequelize);
 const Category = require('./category')(sequelize);
 const Shipper = require('./shipper')(sequelize);
-
 const Employee = require('./employee')(sequelize);
 const Supplier = require('./supplier')(sequelize);
 const Product = require('./product')(sequelize);
 const Order = require('./order')(sequelize);
 const OrderDetail = require('./orderDetail')(sequelize);
-
 const User = require('./user')(sequelize);
 
 
@@ -39,7 +39,8 @@ sequelize.sync()
   .catch(err => {
     console.error('Error synchronizing database:', err);
   });
-  
+
+
 module.exports = {
     sequelize,
     Customer,
