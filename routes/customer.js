@@ -32,7 +32,7 @@ router.post('/', authenticate, async (req, res) => {
 // });
 
 
-router.get('/', authenticate, async (req, res) => {
+router.get('/',authenticate, async (req, res) => {
     let { page = 1, limit = 10 } = req.query; // Default page 1 and limit 10 per page
 
     // Validate and parse limit to ensure it's a number
